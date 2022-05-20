@@ -2,18 +2,16 @@
 
 namespace App;
 
+use App\Discounts\MonetaryDiscount;
+use App\Discounts\QuantityDiscount;
+use App\Discounts\NoDiscount;
+
 class DiscountCalc
 {
     public function calc(Budget $budget): float
     {
-        if ($budget->quantity > 5) {
-            return $budget->value * 0.1;
-        }
+        $discount = new QuantityDiscount(new MonetaryDiscount(new NoDiscount()));
 
-        if ($budget->value > 500) {
-            return $budget->value * 0.05;
-        }
-
-        return 0;
+        return $discount->calc($budget);
     }
 }

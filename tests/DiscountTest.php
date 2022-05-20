@@ -8,32 +8,40 @@ use PHPUnit\Framework\TestCase;
 
 class DiscountTest extends TestCase
 {
-    /**
-     * @dataProvider discountFixture
-     *
-     * @return void
-     */
-    public function testCalcDiscountMustReturnFloat(Budget $budget, $expected)
+
+    public function testCalcDiscountOverQuantityMustBeApplied()
     {
+        $budget = new Budget();
+        $budget->value = 100;
+        $budget->quantity = 6;
 
         $calc = new DiscountCalc();
         $result = $calc->calc($budget);
 
-        self::assertEquals($result, $expected);
+        self::assertEquals($result, 10);
     }
 
-    public function discountFixture()
+    public function testCalcDiscountOverValueMustBeApplied()
     {
-        $budget1 = new Budget();
-        $budget1->quantity = 6;
-        $budget1->value = 100;
+        $budget = new Budget();
+        $budget->value = 501;
+        $budget->quantity = 5;
 
-        $budget2 = new Budget();
-        $budget2->quantity = 4;
-        $budget2->value = 500;
-        return [
-            [$budget1, 10],
-            [$budget1, 5]
-        ];
+        $calc = new DiscountCalc();
+        $result = $calc->calc($budget);
+
+        self::assertEquals($result, 25.05);
+    }
+
+    public function testNoDiscountMustBeApplied()
+    {
+        $budget = new Budget();
+        $budget->value = 100;
+        $budget->quantity = 5;
+
+        $calc = new DiscountCalc();
+        $result = $calc->calc($budget);
+
+        self::assertEquals($result, 0);
     }
 }
