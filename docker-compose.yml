@@ -1,0 +1,16 @@
+version: "3"
+services:
+  design-pattern:
+    container_name: design-pattern
+    build: .
+    volumes:
+      - ".:/var/www/html"
+    ports:
+      - 8030:80
+    networks:
+      - redevistoria
+    environment:
+      - APP_DEBUG=true
+    command: apache2-foreground
+networks:
+  redevistoria: null
